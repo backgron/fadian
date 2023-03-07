@@ -10,7 +10,7 @@ importers:
       '@types/node': 18.14.6
       vitest: 0.29.2
 
-  packages/norm:
+  packages/fadian:
     specifiers:
       '@antfu/eslint-config': ^0.36.0
       cac: ^6.7.14
@@ -26,9 +26,9 @@ importers:
   packages/test:
     specifiers:
       eslint: ^7.32.0
-      norm: workspace:*
+      fadian: workspace:*
     dependencies:
-      norm: link:../norm
+      fadian: link:../fadian
     devDependencies:
       eslint: 7.32.0
 
