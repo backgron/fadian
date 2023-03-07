@@ -4,7 +4,7 @@ import errorCatch from "./errorCatch"
 import getCodeRootDir from "./getCodeRootDir"
 
 /**
- * @description 把normer的模板文件复制到项目中
+ * @description 把fadian的模板文件复制到项目中
  * @param rootDir 项目根目录
  * @param files 文件名数组
  */

@@ -1,11 +1,11 @@
 {
-  "name": "normer",
+  "name": "fadian",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "normer": "bin/index.js"
+    "fadian": "bin/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

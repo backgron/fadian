@@ -6,15 +6,15 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "normer:clean": "normer clean",
-    "normer:init": "normer init",
+    "fadian:clean": "fadian clean",
+    "fadian:init": "fadian init",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx --quiet"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "normer": "workspace:*"
+    "fadian": "workspace:*"
   },
   "devDependencies": {
     "eslint": "^7.32.0"
