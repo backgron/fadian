@@ -1,24 +1,24 @@
 {
-    "name": "test",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "norm:clean": "norm clean",
-        "norm:init": "norm init",
-        "lint": "eslint src --ext .js,.jsx,.ts,.tsx --quiet"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "norm": "workspace:*"
-    },
-    "devDependencies": {
-        "eslint": "^7.32.0"
-    },
-    "lint-staged": {
-        "*.{js,jsx,ts,tsx}": "eslint --fix --quiet"
-    }
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "normer:clean": "normer clean",
+    "normer:init": "normer init",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx --quiet"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "normer": "workspace:*"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --fix --quiet"
+  }
 }

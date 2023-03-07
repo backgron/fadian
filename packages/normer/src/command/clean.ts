@@ -1,16 +1,16 @@
 import { readdir } from "fs/promises"
 import { createInterface } from "readline"
-import { targetFile } from "../utils/meta"
+import { lintFile } from "../utils/meta"
 import { rmFiles } from "../utils/rmFile"
 
-const getTargetFiles = async (rootDir:string) => {
+export const getRemoveFile = async (rootDir:string) => {
   const files = await readdir(rootDir)
-  const rmFile = files.filter((file)=>targetFile.includes(file))
+  const rmFile = files.filter((file)=>lintFile.includes(file))
   return rmFile
 }
 
 
-const sureRemove = async (rmFile:string[])=>{
+export const sureRemove = async (rmFile:string[])=>{
   return new Promise((resolve)=>{
     const rl = createInterface({
       input: process.stdin,
@@ -44,7 +44,7 @@ const sureRemove = async (rmFile:string[])=>{
 }
 
 export const clean =async (rootDir:string)=>{
-  const rmFile =await getTargetFiles(rootDir)
+  const rmFile =await getRemoveFile(rootDir)
   
   if(rmFile.length!=0){
     return await sureRemove(rmFile)

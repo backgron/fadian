@@ -5,15 +5,15 @@
   "main": "index.js",
   "type": "module",
   "bin": {
-    "norm": "bin/index.js"
+    "normer": "bin/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node ./esbuild.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "backgron",
+  "license": "MIT",
   "devDependencies": {
     "esbuild": "^0.17.11",
     "typescript": "^4.9.5"

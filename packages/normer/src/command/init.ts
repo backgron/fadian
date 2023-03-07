@@ -1,6 +1,6 @@
 import { copyFile ,readFile,writeFile} from "fs/promises"
 import {  resolve } from "path"
-import { devDependencies, lintStaged, scripts, targetFile } from "../utils/meta"
+import { devDependencies, lintStaged, scripts, lintFile } from "../utils/meta"
 import { clean } from "./clean"
 import getCodeRootDir from "../utils/getCodeRootDir"
 import {exec} from 'child_process'
@@ -44,10 +44,10 @@ const setPackageJson = async (rootDir:string)=>{
   await writeFile(packageJsonPath,JSON.stringify(packageJson,null,4))
 }
 
-const createFile = async (rootDir:string,)=>{
+const copyLintFile = async (rootDir:string,)=>{
   const codeRootDir = getCodeRootDir()
 
-  targetFile.forEach(async (file) => {
+  lintFile.forEach(async (file) => {
     const from = resolve(codeRootDir,`../template/${file}`)
     const to = resolve(rootDir, file)
     await copyFile(from,to)
@@ -72,8 +72,7 @@ const updateDependencies = async (rootDir:string)=>{
 
 export const init = async (rootDir:string) => {
 
-  const npmEnv = getNpmEnv()
-  await createFile(rootDir)
+  await copyLintFile(rootDir)
   await setPackageJson(rootDir)
   await updateDependencies(rootDir)
 }
