@@ -1,10 +1,19 @@
 import { readdir } from "fs/promises"
 import { createInterface } from "readline"
-import { lintFile } from "../utils/meta"
+import { defaultConfig } from "../utils/defaultConfig"
+import mergeJsonObject from "../utils/mergeJsonObject"
+import { BaseComposition } from "../utils/meta"
 import { rmFiles } from "../utils/rmFile"
 
-export const getRemoveFile = async (rootDir:string) => {
+// 没做好这个地方，需要优化
+export const getRemoveFile = async (rootDir:string,config:BaseComposition) => {
   const files = await readdir(rootDir)
+
+  const lintFile:string[] = Object.keys(config).reduce((pre,cur)=>{
+    //@ts-ignore
+    return pre.concat(config[cur].lintFile)
+  },[])
+
   const rmFile = files.filter((file)=>lintFile.includes(file))
   return rmFile
 }
@@ -43,8 +52,11 @@ export const sureRemove = async (rmFile:string[])=>{
 
 }
 
-export const clean =async (rootDir:string)=>{
-  const rmFile =await getRemoveFile(rootDir)
+export const clean =async (rootDir:string,options:any)=>{
+  const config = mergeJsonObject(options,defaultConfig)
+  
+  const rmFile =await getRemoveFile(rootDir,config)
+
   
   if(rmFile.length!=0){
     return await sureRemove(rmFile)

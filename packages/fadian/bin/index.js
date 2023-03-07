@@ -6,12 +6,12 @@ const fadian = cac("norm")
 
 const rootDir = process.cwd()
 
-fadian.command("clean", "Clean the project").action(() => {
-  clean(rootDir)
+fadian.command("clean", "Clean the project").action((args, options) => {
+  clean(rootDir, options || {})
 })
 
-fadian.command("init", "Init the project").action(() => {
-  init(rootDir)
+fadian.command("init", "Init the project").action((args, options) => {
+  init(rootDir, options || {})
 })
 
 fadian.help()

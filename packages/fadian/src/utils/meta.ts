@@ -1,38 +1,43 @@
-interface BaseItem {
+import { execSync } from 'child_process'
+
+export interface BaseItem {
   name?: string,
   copyFile?: string[],
-  PackageJson?: {
+  packageJson?: {
     devDependencies?: Record<string, string>,
     scripts?: Record<string, string>,
-    lintStaged?: Record<string, string>,
+    "lint-staged"?: Record<string, string>,
   },
+  afterInstallDependencies?: (rootDir: string) => void
 }
 
-interface BaseComposition {
-  esLint?: BaseItem,
+export interface BaseComposition {
+  eslint?: BaseItem,
   husky?: BaseItem,
 }
 
+export type BaseItemType = keyof BaseComposition
+
 export const baseComposition: BaseComposition = {
-  esLint: {
+  eslint: {
     name: 'eslint',
     copyFile: ['.eslintrc'],
-    PackageJson: {
+    packageJson: {
       devDependencies: {
         "eslint": "^8.35.0",
       },
       scripts: {
         lint: "eslint src --ext .js,.jsx,.ts,.tsx --quiet",
       },
-      lintStaged: {
+      "lint-staged": {
         '*.{js,jsx,ts,tsx}': 'eslint --fix --quiet',
       },
     },
   },
   husky: {
     name: 'husky',
-    copyFile: ['commit-msg', 'pre-commit', 'pre-merge'],
-    PackageJson: {
+    copyFile: ['./.husky/commit-msg', './.husky/pre-commit', './.husky/pre-merge'],
+    packageJson: {
       devDependencies: {
         "husky": "^8.0.0",
       },
@@ -40,35 +45,8 @@ export const baseComposition: BaseComposition = {
         "norm:gitMsg": "norm gitMsg",
       },
     },
+    afterInstallDependencies: (rootDir: string) => {
+      execSync('npx husky install', { cwd: rootDir })
+    }
   }
 }
-
-
-
-export const lintFile = [
-  ".eslintrc",
-]
-
-export const huskyFile = [
-  'commit-msg',
-  'pre-commit',
-  'pre-merge',
-]
-
-
-
-export const devDependencies = {
-  "eslint": "^8.35.0",
-  "husky": "^8.0.0",
-
-}
-
-export const scripts = {
-  lint: "eslint src --ext .js,.jsx,.ts,.tsx --quiet",
-  "norm:gitMsg": "norm gitMsg",
-};
-
-export const lintStaged = {
-  '*.{js,jsx,ts,tsx}': 'eslint --fix --quiet',
-};
-
