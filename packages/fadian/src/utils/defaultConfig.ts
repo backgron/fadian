@@ -1,4 +1,4 @@
-import { BaseItemType } from "./meta"
+import type { BaseItemType } from './meta'
 
 export interface FadianConfig {
   exclude?: BaseItemType[]
