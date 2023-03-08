@@ -1,17 +1,21 @@
 #!/usr/bin/env node
 import cac from "cac"
-import { clean, init } from "../dist/index.js"
+import { command } from "../dist/index.js"
 
-const fadian = cac("norm")
+const fadian = cac("fadian")
 
-const rootDir = process.cwd()
+
 
 fadian.command("clean", "Clean the project").action((args, options) => {
-  clean(rootDir, options || {})
+  command(args, options, 'clean')
 })
 
 fadian.command("init", "Init the project").action((args, options) => {
-  init(rootDir, options || {})
+  command(args, options, 'init')
+})
+
+fadian.command("gitMsg", "处理gitMsg").action((args, options) => {
+  command(args, options, 'gitMsg')
 })
 
 fadian.help()

@@ -2,7 +2,7 @@ import esbuild from "esbuild"
 
 const defaultConfig = {
   bundle: true,
-  // sourcemap: true,
+  sourcemap: true,
   target: ["esNext"],
   format: "esm",
   outbase: "src",
