@@ -2,7 +2,7 @@ import setPackageJson from "../core/setPackageJson"
 import { exec } from 'child_process'
 import mergeJsonObject from "../utils/mergeJsonObject"
 import { defaultConfig, FadianConfig } from "../utils/defaultConfig"
-import { BaseComposition, baseComposition, BaseItemType } from "../utils/meta"
+import { BaseComposition, baseComposition, BaseItemType, FadianContext } from "../utils/meta"
 import copyTemplate from "../core/copyTemplate"
 import afterInstallDependenciesHooks from "../core/afterInstallDependenciesHooks"
 
@@ -44,25 +44,30 @@ export const getUsefulComposition = (config: FadianConfig) => {
 
 
 const updateDependencies = async (rootDir: string) => {
-  const npmEnv = getNpmEnv()
-  if (npmEnv) {
-    console.log('更新依赖：')
-    exec(`${npmEnv} install`, { cwd: rootDir }, (err: any, stdout: any, stderr: any) => {
-      if (err) {
-        console.log(err)
-      } else {
-        console.log(stdout)
-      }
-    })
-  }
+  return new Promise((resolve, reject) => {
+    const npmEnv = getNpmEnv()
+    if (npmEnv) {
+      console.log('更新依赖...')
+      exec(`${npmEnv} install`, { cwd: rootDir }, (err: any, stdout: any, stderr: any) => {
+        if (err) {
+          console.log(err)
+          reject(err)
+        } else {
+          console.log(stdout)
+          resolve(true)
+        }
+      })
+    }
+  })
+
+
 }
 
 
-export const init = async (rootDir: string, options: any) => {
+export const init = async (ctx: FadianContext) => {
 
-  const config = mergeJsonObject(options, defaultConfig)
-  // 获取可用的composition
-  const composition = getUsefulComposition(config)
+  const { rootDir, config, composition } = ctx
+
   // 设置package.json
   await setPackageJson(rootDir, composition)
   //安装依赖
@@ -72,5 +77,5 @@ export const init = async (rootDir: string, options: any) => {
   // 复制模板
   await copyTemplate(rootDir, composition)
 
-  await updateDependencies(rootDir)
+  console.log('初始化完成')
 }

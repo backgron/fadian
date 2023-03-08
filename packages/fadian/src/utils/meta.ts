@@ -1,4 +1,13 @@
 import { execSync } from 'child_process'
+import { FadianConfig } from './defaultConfig'
+
+export type commandType = 'init' | 'clean' | 'gitMsg'
+
+export interface FadianContext {
+  rootDir: string,
+  config: FadianConfig,
+  composition: BaseComposition
+}
 
 export interface BaseItem {
   name?: string,
@@ -11,7 +20,11 @@ export interface BaseItem {
   afterInstallDependencies?: (rootDir: string) => void
 }
 
-export interface BaseComposition {
+export interface Composition {
+  [key: string]: BaseItem | undefined
+}
+
+export interface BaseComposition extends Composition {
   eslint?: BaseItem,
   husky?: BaseItem,
 }
@@ -42,7 +55,8 @@ export const baseComposition: BaseComposition = {
         "husky": "^8.0.0",
       },
       scripts: {
-        "norm:gitMsg": "norm gitMsg",
+        "fadian:gitMsg": "fadian gitMsg",
+        "pre-commit": "npm run lint",
       },
     },
     afterInstallDependencies: (rootDir: string) => {
