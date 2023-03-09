@@ -1,20 +1,33 @@
+import { stat } from 'node:fs/promises'
 import { createInterface } from 'node:readline'
-import type { Composition, FadianContext } from '../utils/meta'
-import { rmFiles } from '../utils/rmFile'
+import { join } from 'node:path'
+import { rmFiles } from '../utils'
 
-export const getRemoveFile = async (composition: Composition) => {
+const getRemoveFile = async (rootDir: string, composition: Composition) => {
   let allCopyFile: string[] = []
-
-  Object.keys(composition).forEach((key) => {
-    const itemCopyFile = composition[key]?.copyFile
+  for (const itemType in composition) {
+    const itemCopyFile = composition[itemType]?.copyFile
     if (itemCopyFile)
       allCopyFile = allCopyFile.concat(itemCopyFile)
-  })
+  }
 
-  return allCopyFile
+  // 筛选出allCopyFile中存在的文件，放到一个数组rmFile中
+  const rmFile: string[] = []
+  for (const file of allCopyFile) {
+    try {
+      const isExist = await stat(join(rootDir, file))
+      isExist && rmFile.push(file)
+    }
+    catch {}
+  }
+
+  return rmFile
 }
 
-export const sureRemove = async (rmFile: string[]) => {
+const sureRemove = async (rmFile: string[]) => {
+  if (rmFile.length === 0)
+    return true
+
   return new Promise((resolve) => {
     const rl = createInterface({
       input: process.stdin,
@@ -30,41 +43,32 @@ export const sureRemove = async (rmFile: string[]) => {
 
     rl.on('line', async (line) => {
       // 判断输入的是否是y或者n
-      if (line === 'y') {
-        await rmFiles(rmFile)
-        rl.close()
-        resolve(true)
-      }
-      else if (line === 'n') {
-        rl.close()
-        resolve(false)
-      }
-      else {
-        console.log('请输入y或者n')
-        rl.prompt()
+      switch (line) {
+        case 'y':
+          await rmFiles(rmFile)
+          rl.close()
+          resolve(true)
+          break
+        case 'n':
+          rl.close()
+          resolve(false)
+          break
+        default:
+          console.log('请输入y或者n')
+          rl.prompt()
+          break
       }
     })
   })
 }
 
 export const clean = async (ctx: FadianContext) => {
-  const { rootDir, config, composition } = ctx
+  const { rootDir, composition } = ctx
 
-  const rmFile = await getRemoveFile(composition)
+  const rmFile = await getRemoveFile(rootDir, composition)
 
-  if (rmFile.length !== 0) {
-    const isRemove = await sureRemove(rmFile)
-    if (isRemove) {
-      console.log('删除成功')
-      return true
-    }
-    else {
-      console.log('取消删除')
-      return false
-    }
-  }
-  else {
-    console.log('没有需要删除的文件')
-    return true
-  }
+  const isRemove = await sureRemove(rmFile)
+  if (!isRemove)
+    return false
+  return true
 }

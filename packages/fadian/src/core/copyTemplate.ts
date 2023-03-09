@@ -1,14 +1,18 @@
-import createFile from '../utils/createFile'
-import errorCatch from '../utils/errorCatch'
-import type { BaseComposition, BaseItemType } from '../utils/meta'
-import { baseComposition } from '../utils/meta'
+import { resolve } from 'node:path'
+import { copyFile } from 'node:fs/promises'
+import { getCodeRootDir } from '../utils'
 
-export default async (rootDir: string, composition: BaseComposition) => {
-  Object.keys(composition).forEach(async (key: string) => {
-    const itemType = key as BaseItemType
+export const copyTemplate = async (ctx: FadianContext) => {
+  const { rootDir, composition } = ctx
+  const codeRootDir = getCodeRootDir()
+
+  for (const itemType in composition) {
     const files = composition[itemType]?.copyFile
 
-    if (files)
-      await errorCatch(createFile, rootDir, files)
-  })
+    files && files.forEach(async (file) => {
+      const from = resolve(codeRootDir, `../template/${file}`)
+      const to = resolve(rootDir, file)
+      await copyFile(from, to)
+    })
+  }
 }

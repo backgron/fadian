@@ -1,14 +1,11 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import type { FadianContext } from '../../utils/meta'
 
-const gitMsg = (ctx: FadianContext) => {
-  const { rootDir, config, composition } = ctx
+export const gitMessage = (ctx: FadianContext) => {
+  const { rootDir } = ctx
 
   const msgPath = resolve(rootDir, process.argv[3])
-  console.log('msgPath', msgPath)
   const msg = readFileSync(msgPath, 'utf-8').toString()
-  console.log('msg', msgPath)
 
   // 写一个正则表达式，匹配以commitlint规范的commit message
   const commitRE
@@ -21,5 +18,3 @@ const gitMsg = (ctx: FadianContext) => {
     process.exit(1)
   }
 }
-
-export default gitMsg

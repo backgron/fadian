@@ -1,18 +1,26 @@
-import type { FadianContext, commandType } from '../utils/meta'
-import { defaultConfig } from '../utils/defaultConfig'
-import mergeJsonObject from '../utils/mergeJsonObject'
-import getUserConfig from '../utils/getUserConfig'
-import gitMsg from '../specific/husky/gitMsg'
+import { baseComposition, defaultConfig } from '../meta'
+import { gitMessage } from '../specific/husky/gitMessage'
+import { extend, getUserConfig } from '../utils'
 import { clean } from './clean'
-import { getUsefulComposition, init } from './init'
+import { init } from './init'
 
-const command = async (args: any, options: any, type: commandType) => {
+const getUsefulComposition = (config: FadianConfig) => {
+  const { exclude } = config
+  const composition: Composition = {}
+
+  for (const itemType in baseComposition) {
+    if (exclude?.includes(itemType))
+      continue
+    composition[itemType] = baseComposition[itemType]
+  }
+
+  return composition
+}
+
+const command = async (args: any, options: any, type: CommandType) => {
   const rootDir = process.cwd()
   const userConfig = await getUserConfig(rootDir)
-  const config = defaultConfig
-  options && mergeJsonObject(config, options)
-  userConfig && mergeJsonObject(config, userConfig)
-  console.log('config', config)
+  const config = extend(defaultConfig, options, userConfig)
   const composition = getUsefulComposition(config)
 
   const ctx: FadianContext = { rootDir, config, composition }
@@ -25,7 +33,7 @@ const command = async (args: any, options: any, type: commandType) => {
       clean(ctx)
       break
     case 'gitMsg':
-      gitMsg(ctx)
+      gitMessage(ctx)
       break
   }
 }
