@@ -52,6 +52,7 @@ export const fileExist = async (path: string) => {
 
 export const getUserConfig = async (rootDir: string, configPath = '/fadian.config.js') => {
   const path = join(rootDir + configPath)
+  // 在windows上通过import() 动态导入ESM必须使用file://协议
   const userConfigUrl: string = url.pathToFileURL(path).href
   let userConfig = {}
 
