@@ -31,7 +31,7 @@ export const rmFiles = async (path: string | string[]) => {
 export const extend = (target: Record<string, any>, ...origins: Record<string, any>[]) => {
   origins.forEach((origin) => {
     for (const key in origin) {
-      if (typeof origin[key] === 'object')
+      if (typeof origin[key] === 'object' && origin[key] !== null)
         target[key] = extend(target[key] || {}, origin[key])
       else
         target[key] = origin[key]
