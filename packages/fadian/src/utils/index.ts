@@ -1,6 +1,6 @@
 import { join, resolve } from 'node:path'
 import url from 'node:url'
-import { rm } from 'node:fs/promises'
+import { rm, stat } from 'node:fs/promises'
 
 export const getNpmEnv = () => {
   const npmType = ['pnpm', 'npm', 'yarn']
@@ -40,11 +40,31 @@ export const extend = (target: Record<string, any>, ...origins: Record<string, a
   return target
 }
 
+export const fileExist = async (path: string) => {
+  try {
+    await stat(path)
+    return true
+  }
+  catch {
+    return false
+  }
+}
+
 export const getUserConfig = async (rootDir: string, configPath = '/fadian.config.js') => {
   const path = join(rootDir + configPath)
   const userConfigUrl: string = url.pathToFileURL(path).href
-
   let userConfig = {}
+
+  if (!(await fileExist(path)))
+    return userConfig
+
+  try {
+    await stat(userConfigUrl)
+  }
+  catch {
+    return userConfig
+  }
+
   try {
     const target = await import(userConfigUrl)
     userConfig = target.default

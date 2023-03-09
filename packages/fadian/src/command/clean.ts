@@ -1,7 +1,6 @@
-import { stat } from 'node:fs/promises'
 import { createInterface } from 'node:readline'
 import { join } from 'node:path'
-import { rmFiles } from '../utils'
+import { fileExist, rmFiles } from '../utils'
 
 const getRemoveFile = async (rootDir: string, composition: Composition) => {
   let allCopyFile: string[] = []
@@ -14,11 +13,8 @@ const getRemoveFile = async (rootDir: string, composition: Composition) => {
   // 筛选出allCopyFile中存在的文件，放到一个数组rmFile中
   const rmFile: string[] = []
   for (const file of allCopyFile) {
-    try {
-      const isExist = await stat(join(rootDir, file))
-      isExist && rmFile.push(file)
-    }
-    catch {}
+    const isExist = await fileExist(join(rootDir, file))
+    isExist && rmFile.push(file)
   }
 
   return rmFile
