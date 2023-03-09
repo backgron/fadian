@@ -59,13 +59,6 @@ export const getUserConfig = async (rootDir: string, configPath = '/fadian.confi
     return userConfig
 
   try {
-    await stat(userConfigUrl)
-  }
-  catch {
-    return userConfig
-  }
-
-  try {
     const target = await import(userConfigUrl)
     userConfig = target.default
   }
