@@ -1,9 +1,12 @@
 {
   "name": "fadian",
+  "type": "module",
   "version": "0.0.1",
   "description": "",
+  "author": "backgron",
+  "license": "MIT",
+  "keywords": [],
   "main": "index.js",
-  "type": "module",
   "bin": {
     "fadian": "bin/index.js"
   },
@@ -11,15 +14,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node ./esbuild.js"
   },
-  "keywords": [],
-  "author": "backgron",
-  "license": "MIT",
-  "devDependencies": {
-    "esbuild": "^0.17.11",
-    "typescript": "^4.9.5"
-  },
   "dependencies": {
     "@antfu/eslint-config": "^0.36.0",
     "cac": "^6.7.14"
+  },
+  "devDependencies": {
+    "esbuild": "^0.17.11",
+    "typescript": "^4.9.5"
   }
 }
