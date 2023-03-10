@@ -1,4 +1,4 @@
-export default async (ctx: FadianContext) => {
+export const installed = async (ctx: FadianContext) => {
   const { composition } = ctx
 
   for (const itemType in composition)

@@ -1,5 +1,5 @@
 import { copyTemplate, installDep, setPackageJson } from '../core'
-import installed from '../hooks/installed'
+import { installed } from '../hooks/installed'
 import { clean } from './clean'
 
 export const init = async (ctx: FadianContext) => {
