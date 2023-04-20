@@ -5,14 +5,12 @@ export const baseComposition: BaseComposition = {
     name: 'eslint',
     copyFile: ['.eslintrc'],
     packageJson: {
-      'devDependencies': {
-        eslint: '^8.35.0',
+      devDependencies: {
+        'eslint': '^8.35.0',
+        '@antfu/eslint-config': '^0.38.5',
       },
-      'scripts': {
+      scripts: {
         lint: 'eslint src --ext .js,.jsx,.ts,.tsx --quiet',
-      },
-      'lint-staged': {
-        '*.{js,jsx,ts,tsx}': 'eslint --fix --quiet',
       },
     },
   },
@@ -20,12 +18,16 @@ export const baseComposition: BaseComposition = {
     name: 'husky',
     copyFile: ['./.husky/commit-msg', './.husky/pre-commit', './.husky/pre-merge'],
     packageJson: {
-      devDependencies: {
-        husky: '^8.0.0',
+      'devDependencies': {
+        'husky': '^8.0.0',
+        'lint-staged': '^13.2.1',
       },
-      scripts: {
+      'scripts': {
         'fadian:gitMsg': 'fadian gitMsg',
-        'pre-commit': 'npm run lint',
+        'pre-commit': 'lint-staged',
+      },
+      'lint-staged': {
+        '*.{js,jsx,ts,tsx}': 'eslint --fix --quiet',
       },
     },
     installed: (ctx: FadianContext) => {

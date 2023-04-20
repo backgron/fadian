@@ -6,10 +6,15 @@
   "author": "backgron",
   "license": "MIT",
   "keywords": [],
-  "main": "index.js",
+  "module": "dist/index.js",
   "bin": {
     "fadian": "bin/index.js"
   },
+  "files": [
+    "template",
+    "bin",
+    "dist"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node ./esbuild.js"
