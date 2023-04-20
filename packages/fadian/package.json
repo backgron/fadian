@@ -1,7 +1,7 @@
 {
   "name": "fadian",
   "type": "module",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "author": "backgron",
   "license": "MIT",
@@ -17,7 +17,8 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node ./esbuild.js"
+    "build": "node ./esbuild.js",
+    "pub": "pnpm run build && npm publish"
   },
   "dependencies": {
     "@antfu/eslint-config": "^0.36.0",
